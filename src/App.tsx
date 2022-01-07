@@ -8,14 +8,22 @@ dayjs.extend(duration)
 
 const year = parseInt(window.location.search.slice(1))
 
-const target = dayjs(new Date(year, 1, 1, 0, 0, 0, 0))
+const target = new Date(year, 0, 1).getTime()
+
+console.log(Date.now(), target)
 
 function App() {
     const [time, setTime] = useState('')
 
     React.useEffect(() => {
         const i = setInterval(() => {
-            setTime(dayjs.duration(target.diff()).format('HH:mm:ss'))
+            // setTime(dayjs.duration(target.diff()).format('HH:mm:ss'))
+            const current = target - Date.now()
+            const seconds = Math.floor(current / 1000 % 60)
+            const minutes = Math.floor(current / (1000*60) % 60)
+            const hours = Math.floor(current / 3_600_000)
+
+            setTime(`${hours}:${minutes}:${seconds}`)
         }, 100)
 
         return () => clearInterval(i)
