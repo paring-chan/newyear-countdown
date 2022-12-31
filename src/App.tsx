@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import dayjs from "dayjs";
+import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 
 dayjs.extend(duration)
@@ -12,29 +12,34 @@ const target = new Date(year, 0, 1).getTime()
 
 console.log(Date.now(), target)
 
+const pad = (target: number) =>
+  target.toLocaleString('en-US', {
+    minimumIntegerDigits: 2,
+  })
+
 function App() {
-    const [time, setTime] = useState('')
+  const [time, setTime] = useState('')
 
-    React.useEffect(() => {
-        const i = setInterval(() => {
-            // setTime(dayjs.duration(target.diff()).format('HH:mm:ss'))
-            const current = target - Date.now()
-            const seconds = Math.floor(current / 1000 % 60)
-            const minutes = Math.floor(current / (1000*60) % 60)
-            const hours = Math.floor(current / 3_600_000)
+  React.useEffect(() => {
+    const i = setInterval(() => {
+      // setTime(dayjs.duration(target.diff()).format('HH:mm:ss'))
+      const current = target - Date.now()
+      const seconds = Math.floor((current / 1000) % 60)
+      const minutes = Math.floor((current / (1000 * 60)) % 60)
+      const hours = Math.floor(current / 3_600_000)
 
-            setTime(`${hours}:${minutes}:${seconds}`)
-        }, 100)
+      setTime(`${pad(hours)}:${pad(minutes)}:${pad(seconds)}`)
+    }, 100)
 
-        return () => clearInterval(i)
-    }, [])
+    return () => clearInterval(i)
+  }, [])
 
-    return (
-        <div className="App">
-            <title>Goodbye {year-1}!</title>
-            {time}
-        </div>
-    )
+  return (
+    <div className="App">
+      <title>Goodbye {year - 1}!</title>
+      {time}
+    </div>
+  )
 }
 
 export default App
